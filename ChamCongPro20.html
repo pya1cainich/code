@@ -612,22 +612,18 @@ function xdBC(){
 const el=document.getElementById('bangCa');
 if(!el)return;
 // Tính tổng giờ thực tế trong tháng
-const nd=new Date(nam,thang,1).getDay();
 const sn=new Date(nam,thang+1,0).getDate();
 const gioCA=cfg.gioNgay||8;
 let tongGio=0;
 for(let g=1;g<=sn;g++){
-  const thu=(nd+g-1)%7;
-  const laCT=thu===0||thu===6;
   const k=nam+'-'+thang+'-'+g;
   const tt=ccD[k];
-  const gd=gioD[k];
+  if(tt!=='cm'&&tt!=='ll')continue;
   const ngayObj=new Date(nam,thang,g);
   const laTL=ngayObj>hn&&!(g===hn.getDate()&&thang===hn.getMonth()&&nam===hn.getFullYear());
   if(laTL)continue;
-  if(tt==='cm'||tt==='ll'){tongGio+=gd?soGio(gd.v,gd.r)||gioCA:gioCA;}
-  else if(tt==='np'){tongGio+=gioCA;}
-  else if(!laCT&&!tt&&layCa(ngayObj)&&!gNL(nam,thang,g)){tongGio+=gioCA;}
+  const gd=gioD[k];
+  tongGio+=gd?soGio(gd.v,gd.r)||gioCA:gioCA;
 }
 // Mức chuẩn Việt Nam (BLLĐ 2019): 8h × 22 ngày = 176h/tháng
 // Chăm chỉ: 177–220h (≤44h/tuần TB)
