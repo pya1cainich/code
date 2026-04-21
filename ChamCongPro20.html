@@ -611,7 +611,6 @@ function xdChuThich(){const el=document.getElementById('chuThich');el.innerHTML=
 function xdBC(){
 const el=document.getElementById('bangCa');
 if(!el)return;
-// Tính tổng giờ thực tế trong tháng
 const sn=new Date(nam,thang+1,0).getDate();
 const gioCA=cfg.gioNgay||8;
 let tongGio=0;
@@ -625,16 +624,25 @@ for(let g=1;g<=sn;g++){
   const gd=gioD[k];
   tongGio+=gd?soGio(gd.v,gd.r)||gioCA:gioCA;
 }
-// Mức chuẩn Việt Nam (BLLĐ 2019): 8h × 22 ngày = 176h/tháng
-// Chăm chỉ: 177–220h (≤44h/tuần TB)
-// Quá sức: >220h
-const GIO_CHUAN=176,GIO_CHAM=220;
-let color,levelTxt,badgeBg,badgeFg,pct;
-if(tongGio<=GIO_CHUAN){color='#1D9E75';levelTxt='Bình thường';badgeBg='#E1F5EE';badgeFg='#0F6E56';pct=tongGio/GIO_CHUAN*100;}
-else if(tongGio<=GIO_CHAM){color='#EF9F27';levelTxt='Chăm chỉ';badgeBg='#FAEEDA';badgeFg='#854F0B';pct=tongGio/GIO_CHAM*100;}
-else{color='#E24B4A';levelTxt='Quá sức';badgeBg='#FCEBEB';badgeFg='#A32D2D';pct=Math.min(tongGio/(GIO_CHAM+40)*100,100);}
-pct=Math.min(pct,100);
-const mk176=GIO_CHUAN/GIO_CHAM*100;
+const GIO_CHUAN=176,GIO_CHAM=220,GIO_MAX=GIO_CHAM+40;
+const fillGio=Math.max(Math.min(tongGio,GIO_MAX),0.01);
+const pct=Math.min(tongGio/GIO_MAX*100,100);
+const mk176=(GIO_CHUAN/GIO_MAX*100).toFixed(1);
+let levelTxt,badgeBg,badgeFg;
+if(tongGio<=GIO_CHUAN){levelTxt='Bình thường';badgeBg='#E1F5EE';badgeFg='#0F6E56';}
+else if(tongGio<=GIO_CHAM){levelTxt='Chăm chỉ';badgeBg='#FAEEDA';badgeFg='#854F0B';}
+else{levelTxt='Quá sức';badgeBg='#FCEBEB';badgeFg='#A32D2D';}
+let fillBg;
+if(tongGio<=GIO_CHUAN){
+  fillBg='#1D9E75';
+}else if(tongGio<=GIO_CHAM){
+  const g=(GIO_CHUAN/fillGio*100).toFixed(1);
+  fillBg=`linear-gradient(to right,#1D9E75 ${g}%,#EF9F27 ${g}%)`;
+}else{
+  const g=(GIO_CHUAN/fillGio*100).toFixed(1);
+  const o=(GIO_CHAM/fillGio*100).toFixed(1);
+  fillBg=`linear-gradient(to right,#1D9E75 ${g}%,#EF9F27 ${g}%,#EF9F27 ${o}%,#E24B4A ${o}%)`;
+}
 el.innerHTML=`
 <div class="gbd-top">
   <span class="gbd-title">Giờ làm tháng này</span>
@@ -644,7 +652,7 @@ el.innerHTML=`
   </div>
 </div>
 <div class="gbd-track">
-  <div class="gbd-fill" style="width:${pct}%;background:${color}"></div>
+  <div class="gbd-fill" style="width:${pct}%;background:${fillBg}"></div>
 </div>
 <div class="gbd-markers">
   <span class="gbd-mk" style="left:0">0h</span>
