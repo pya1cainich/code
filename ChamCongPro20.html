@@ -86,6 +86,12 @@
 .gps-check-txt{color:var(--text2);}
 .gps-check-txt strong{display:block;font-size:13px;color:var(--text);}
 .gps-override{font-size:11px;color:#E24B4A;background:none;border:none;cursor:pointer;padding:0;margin-top:4px;text-decoration:underline;}
+
+/* ===== GHI CHÚ ===== */
+.gc-wrap{margin:0 0 12px;}
+.gc-nhan{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;}
+.gc-area{width:100%;font-size:13px;border:1px solid var(--border);border-radius:9px;padding:9px 11px;background:var(--bg);color:var(--text);resize:none;font-family:inherit;line-height:1.5;}
+.gc-area:focus{outline:none;border-color:#1D9E75;}
 </style>
 </head>
 <body>
@@ -284,6 +290,7 @@ Thiết lập lại app
 <div class="m-luong-hang" id="mLOT" style="display:none"><span class="m-luong-n" id="mLOT_n">Tăng ca</span><span class="m-luong-v ot" id="mLOT_v">—</span></div>
 <div class="m-luong-tong"><span>Tổng ngày này</span><span class="m-luong-tong-v" id="mLTong">—</span></div>
 </div>
+<div class="gc-wrap"><div class="gc-nhan">Ghi chú</div><textarea class="gc-area" id="gcArea" placeholder="Thêm ghi chú cho ngày này..." rows="2"></textarea></div>
 <div class="m-nuts"><button class="m-nut" onclick="dongCC()">Hủy bỏ</button><button class="m-nut ok" onclick="luuCC()">Lưu lại</button></div>
 </div>
 </div>
