@@ -14,6 +14,16 @@ There is no build system, package manager, or test suite. To develop:
 - All edits are made directly to `ChamCongPro20.html`.
 - The app can be deployed as-is to GitHub Pages.
 
+## Rules for AI Assistants
+
+1. **UI is off-limits for logic fixes** — Do not modify HTML/CSS when the task is a logic or calculation bug fix.
+2. **Never delete localStorage keys** — Existing keys (`ccp_cfg`, `ccp_hs`, `ccp_cc`, `ccp_gio`, `ccp_gc`) must not be removed; only add new ones.
+3. **No public function renames without a full-file search** — Before renaming any function called via `onclick`/`oninput` or referenced in other JS, verify all call-sites in `ChamCongPro20.html`.
+4. **State machine changes must preserve `[SA/SA]` log markers** — Any edit to the screen-switching logic (`.man-chao`, `.ob-wrap`, `.app-ch` visibility transitions) must keep existing `[SA/SA]` markers intact.
+5. **Syntax-check JS after every edit** — Extract the `<script>` block and run `node --check <file>` (or a JS linter) before reporting completion.
+6. **Always report: root cause, files changed, remaining risks** — Every bug-fix response must include these three items explicitly.
+7. **No new dependencies without approval** — Do not introduce CDN `<script>` tags or any external resources without explicit user permission.
+
 ## Architecture
 
 ### File Structure
